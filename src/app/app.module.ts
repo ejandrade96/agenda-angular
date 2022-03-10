@@ -3,18 +3,19 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './components/template/header/header.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FooterComponent } from './components/template/footer/footer.component';
-import { NavComponent } from './components/template/nav/nav.component';
-
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
+
+import { HeaderComponent } from './components/template/header/header.component';
+import { NavComponent } from './components/template/nav/nav.component';
+import { FooterComponent } from './components/template/footer/footer.component';
 import { HomeComponent } from './views/home/home.component';
-import { AppRoutingModule } from './app-routing.module';
 import { SaveContactComponent } from './views/contact/save-contact/save-contact.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppDefaultColorDirective } from './directives/app-default-color.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SaveContactComponent } from './views/contact/save-contact/save-contact.
     FooterComponent,
     NavComponent,
     HomeComponent,
-    SaveContactComponent
+    SaveContactComponent,
+    AppDefaultColorDirective
   ],
   imports: [
     BrowserModule,
