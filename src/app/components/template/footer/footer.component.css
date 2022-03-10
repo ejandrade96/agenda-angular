@@ -1,0 +1,17 @@
+.footer {
+   position: fixed; 
+   bottom: 0;
+
+   display: flex;
+   justify-content: flex-end;
+   height: 45px !important;
+}
+
+.footer > span {
+   font-size: 0.9rem; 
+   font-weight: 400;
+}
+
+.footer .development-author {
+    color: #7386D5;
+}
