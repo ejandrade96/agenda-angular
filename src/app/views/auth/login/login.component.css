@@ -1,0 +1,22 @@
+mat-card {
+    max-width: 400px;
+    margin: 5em auto;
+    text-align: center;
+  }
+
+  .signin-content {
+    padding: 60px 1rem;
+  }
+
+  .full-width-input {
+    width: 100%;
+  }
+
+  .signin-content .register-user-link {
+      padding-left: 10px;
+  }
+
+  .signin-content img {
+      width: 60px;
+      margin: 0;
+  }

@@ -1,0 +1,31 @@
+<div class="signin-content">
+    <mat-card>
+        <mat-card-content>
+            <img mat-card-image src="assets/img/logo.png" alt="Um logo contendo a imagem de uma agenda de contatos">
+            <form [formGroup]="loginForm">
+                <mat-form-field class="full-width-input">
+                    <input matInput placeholder="Usuário" formControlName="user" type="text" name="user"
+                        autocomplete="off" required>
+                    <mat-error>
+                        Por favor informe o seu usuário
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width-input">
+                    <input matInput type="password" placeholder="Senha" name="password" formControlName="password"
+                        required>
+                    <mat-error>
+                        Por favor informe a sua senha
+                    </mat-error>
+                </mat-form-field>
+                <mat-card-actions>
+                    <mat-card-footer>
+                        <!-- <button (click)="onSubmit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light adq-spinner': loading}" id="kt_login_signin_submit" class="adq-login-button">Entrar</button> -->
+                        <button mat-raised-button color="primary" (click)="onSubmit()" class="">Entrar</button>
+                        <a routerLink="/registrar" class="register-user-link"><button mat-raised-button
+                                color="link">Registrar-se</button></a>
+                    </mat-card-footer>
+                </mat-card-actions>
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>

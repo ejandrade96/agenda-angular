@@ -22,3 +22,9 @@
 .header .title-group i {
     padding-right: 3px;
 }
+
+.header .logout {
+    margin-left: auto;
+    cursor: pointer;
+    color: #7386D5;
+}

@@ -1,3 +1,4 @@
-<app-header></app-header>
-<app-nav></app-nav>
-<app-footer></app-footer>
+<app-header *ngIf="isLoggedIn$ | async"></app-header>
+<app-nav *ngIf="isLoggedIn$ | async"></app-nav>
+<app-footer *ngIf="isLoggedIn$ | async"></app-footer>
+<router-outlet></router-outlet>
