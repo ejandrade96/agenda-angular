@@ -1,11 +1,11 @@
 // Angular
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 // RxJS
-import { map } from 'rxjs/operators';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 
 // Models
 import { User } from 'src/app/models/user.model';
@@ -17,6 +17,7 @@ import { TokenStorageService } from './token-storage.service';
 @Injectable()
 export class AuthService {
     private loggedIn = new BehaviorSubject<boolean>(false);
+    public onLoginErrorEvent = new EventEmitter<any>();
     API_ENDPOINT_LOGIN = '/login';
 
     get isLoggedIn() {
@@ -53,7 +54,10 @@ export class AuthService {
                     this.tokenStorage.setAccessToken(result.token);
                 }
                 return result;
-            })
+            }),
+            catchError(
+                this.handleError('login', [])
+            )
         );
     }
 
@@ -66,5 +70,23 @@ export class AuthService {
         if (refresh) {
             this.router.navigate(['/login']);
         }
+    }
+
+    /**
+     * Handle Http operation that failed.
+     * Let the app continue.
+     * @param operation - name of the operation that failed
+     * @param result - optional value to return as the observable result
+     */
+    private handleError<T>(operation = 'operation', result?: any) {
+        return (error: any): Observable<any> => {
+
+            // TODO: send the error to remote logging infrastructure
+            console.error(error); // log to console instead
+
+            this.onLoginErrorEvent.emit(error);
+            // Let the app keep running by returning an empty result.
+            return from(result);
+        };
     }
 }

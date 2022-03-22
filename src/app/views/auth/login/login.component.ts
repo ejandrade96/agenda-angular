@@ -26,7 +26,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         private messageService: MessageService,
         private route: ActivatedRoute,
         private router: Router
-    ) { }
+    ) { 
+        this.authService.onLoginErrorEvent.subscribe((response: any) => this.onLoginError(response));
+    }
 
     ngOnInit(): void {
         this.initLoginForm();
@@ -77,7 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             Object.keys(controls).forEach(controlName =>
                 controls[controlName].markAsTouched()
             );
-            this.messageService.showMessage(MessageType.Warning, 'Usuário e senha devem ser informados', {});
+            this.messageService.showMessage("error", 'Usuário e senha devem ser informados', {});
             return;
         }
 
@@ -93,10 +95,14 @@ export class LoginComponent implements OnInit, OnDestroy {
                     if (user && user.token) {
                         this.router.navigateByUrl(this.returnUrl);
                     } else {
-                        this.messageService.showMessage(MessageType.Error, 'Usuário ou senha inválidos', {});
+                        this.messageService.showMessage("success", 'Usuário ou senha inválidos', {});
                     }
                 })
             )
             .subscribe();
     }
+
+    onLoginError(response: any){
+        this.messageService.showMessage('error', response.error.mensagem, {});
+	}
 }
