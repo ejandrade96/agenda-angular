@@ -4,7 +4,6 @@ import { CanActivate, CanActivateChild, CanLoad, Route, Router, UrlSegment, Acti
 
 // RxJS
 import { Observable, of } from 'rxjs';
-import { map, take } from 'rxjs/operators';
 
 // Layout Services
 import { AuthService } from '../services/auth.service';
@@ -36,30 +35,25 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
     private canAccess(): boolean {
         let tokenIsValid = this.validateToken(this.tokenStorageService.getAccessToken());
-        let isLoggedIn: boolean;
-        this.isLoggedIn().subscribe(x => isLoggedIn = x);
+        let isLoggedIn = this.isLoggedIn();
 
-        return tokenIsValid && isLoggedIn;
+        if (tokenIsValid && isLoggedIn) {
+            return true;
+        } else {
+            this.router.navigateByUrl('/login');
+            return false;
+        }
     }
 
-    private isLoggedIn(): Observable<boolean> {
-        return this.authService.isLoggedIn
-            .pipe(
-                take(1),
-                map((isLoggedIn: boolean) => {
-                    if (!isLoggedIn) {
-                        this.router.navigateByUrl('/login');
-                        return false;
-                    }
-                    return true;
-                })
-            )
+    private isLoggedIn(): boolean {
+        var loggedIn: boolean;
+        this.authService.getIsLoggedIn().subscribe(x => loggedIn = x);
+        return loggedIn;
     }
 
     private validateToken(token: string): boolean {
         try {
-            if (!token || token === 'token') {
-                this.router.navigateByUrl('/login');
+            if (!token || token.includes('token')) {
                 return false;
             }
             return true;

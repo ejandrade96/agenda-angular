@@ -12,7 +12,7 @@ export class InterceptService implements HttpInterceptor {
 
     constructor() { }
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        req = req.clone({ url: `https://localhost:5004${req.url}` });
+        req = req.clone({ url: `http://localhost:5001${req.url}` });
         return next.handle(req);
     }
 }

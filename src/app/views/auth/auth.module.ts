@@ -24,6 +24,9 @@ import { AuthGuard } from '../../core/auth/guards/auth.guard';
 import { TokenStorageService } from '../../core/auth/services/token-storage.service';
 import { AuthService } from '../../core/auth/services/auth.service';
 
+// States
+import { AuthState } from '../../core/auth/cache/auth.state';
+
 const routes: Routes = [
   {
     path: '',
@@ -67,7 +70,8 @@ const routes: Routes = [
   providers: [
     AuthGuard,
     TokenStorageService,
-    AuthService
+    AuthService,
+    AuthState
   ]
 })
 export class AuthModule { }
