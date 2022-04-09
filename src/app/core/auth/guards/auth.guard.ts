@@ -6,7 +6,6 @@ import { CanActivate, CanActivateChild, CanLoad, Route, Router, UrlSegment, Acti
 import { Observable, of } from 'rxjs';
 
 // Layout Services
-import { AuthService } from '../services/auth.service';
 import { TokenStorageService } from '../services/token-storage.service';
 
 @Injectable()
@@ -14,11 +13,10 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
     constructor(
         private router: Router,
         private tokenStorageService: TokenStorageService,
-        private authService: AuthService
     ) { }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        return of(this.canAccess());
+        return of(this.validateToken(this.tokenStorageService.getAccessToken()));
     }
 
     canActivateChild(
@@ -33,33 +31,16 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
         return true;
     }
 
-    private canAccess(): boolean {
-        let tokenIsValid = this.validateToken(this.tokenStorageService.getAccessToken());
-        let isLoggedIn = this.isLoggedIn();
-
-        if (tokenIsValid && isLoggedIn) {
-            return true;
-        } else {
-            this.router.navigateByUrl('/login');
-            return false;
-        }
-    }
-
-    private isLoggedIn(): boolean {
-        var loggedIn: boolean;
-        this.authService.getIsLoggedIn().subscribe(x => loggedIn = x);
-        return loggedIn;
-    }
-
     private validateToken(token: string): boolean {
         try {
             if (!token || token.includes('token')) {
+                this.router.navigateByUrl('/auth/login');
                 return false;
             }
             return true;
         } catch {
             this.tokenStorageService.clear();
-            this.router.navigateByUrl('/login');
+            this.router.navigateByUrl('/auth/login');
             return false;
         }
     }

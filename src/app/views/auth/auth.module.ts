@@ -1,5 +1,5 @@
 // Angular
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,50 +28,59 @@ import { AuthService } from '../../core/auth/services/auth.service';
 import { AuthState } from '../../core/auth/cache/auth.state';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: AuthComponent,
-    children: [
-      {
+    {
         path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
-      },
-      {
-        path: 'login',
-        component: LoginComponent
-      },
-      {
-        path: 'registrar',
-        component: RegisterComponent
-      }
-    ]
-  }
+        component: AuthComponent,
+        children: [
+            {
+                path: '',
+                redirectTo: 'login',
+                pathMatch: 'full'
+            },
+            {
+                path: 'login',
+                component: LoginComponent,
+                data: { returnUrl: window.location.pathname }
+            },
+            {
+                path: 'registrar',
+                component: RegisterComponent
+            }
+        ]
+    }
 ];
 
 @NgModule({
-  declarations: [
-    LoginComponent,
-    AuthComponent,
-    RegisterComponent
-  ],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule.forChild(routes),
-    SharedModule,
-    MatToolbarModule,
-    MatCardModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule 
-  ],
-  providers: [
-    AuthGuard,
-    TokenStorageService,
-    AuthService,
-    AuthState
-  ]
+    declarations: [
+        AuthComponent,
+        LoginComponent,
+        RegisterComponent
+    ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule.forChild(routes),
+        SharedModule,
+        MatToolbarModule,
+        MatCardModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatButtonModule
+    ],
+    providers: [
+        TokenStorageService,
+        AuthState
+    ]
 })
-export class AuthModule { }
+export class AuthModule {
+    static forRoot(): ModuleWithProviders<AuthModule> {
+        return {
+            ngModule: AuthModule,
+            providers: [
+                AuthService,
+                AuthGuard
+            ]
+        };
+    }
+}

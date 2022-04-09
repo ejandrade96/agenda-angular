@@ -14,9 +14,6 @@ import { AccessData } from '../models/access-data';
 // Layout Services
 import { TokenStorageService } from './token-storage.service';
 
-// States
-import { AuthState } from '../cache/auth.state';
-
 @Injectable()
 export class AuthService {
     public onLoginErrorEvent = new EventEmitter<any>();
@@ -26,16 +23,7 @@ export class AuthService {
         private http: HttpClient,
         private tokenStorage: TokenStorageService,
         private router: Router,
-        private authState: AuthState
     ) { }
-
-    getIsLoggedIn(): Observable<boolean> {
-        return this.authState.getIsLoggedIn();
-    }
-
-    setIsLoggedIn(valor: boolean) {
-        this.authState.setIsLoggedIn(valor);
-    }
 
     /**
      * Submit login request
@@ -56,7 +44,6 @@ export class AuthService {
         return this.http.post<AccessData>(url, httpParams, httpOptions).pipe(
             map((result: any) => {
                 if (result.token) {
-                    this.setIsLoggedIn(true);
                     this.tokenStorage.setNome(result.nome);
                     this.tokenStorage.setAccessToken(result.token);
                 }
@@ -73,10 +60,9 @@ export class AuthService {
      * @param refresh - defines whether the page will be refreshed. Default value true
      */
     public logout(refresh: boolean = true): void {
-        this.setIsLoggedIn(false);
         this.tokenStorage.clear();
         if (refresh) {
-            this.router.navigate(['/login']);
+            this.router.navigate(['/auth/login']);
         }
     }
 

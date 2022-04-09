@@ -10,6 +10,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 // Components
 import { AppComponent } from './app.component';
+import { BaseComponent } from './components/base/base.component';
 import { HeaderComponent } from './components/template/header/header.component';
 import { NavComponent } from './components/template/nav/nav.component';
 import { FooterComponent } from './components/template/footer/footer.component';
@@ -27,6 +28,7 @@ import { InterceptService } from './core/utils/intercept.service';
 @NgModule({
     declarations: [
         AppComponent,
+        BaseComponent,
         HeaderComponent,
         FooterComponent,
         NavComponent,
@@ -41,9 +43,9 @@ import { InterceptService } from './core/utils/intercept.service';
         MatListModule,
         MatCardModule,
         AppRoutingModule,
-        AuthModule,
+        AuthModule.forRoot(),
         HttpClientModule,
-        ToastrModule.forRoot(),
+        ToastrModule.forRoot()
     ],
     providers: [
         {
